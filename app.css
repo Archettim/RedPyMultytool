@@ -1,0 +1,79 @@
+Button {
+    width: 16;
+}
+#dns,#arp,#sh,#rmw,#wr{
+    width: 40;
+}
+
+#start {
+    dock: left;
+}
+
+#stop {
+    dock: right;
+
+}
+
+#reset {
+    dock: right;
+}
+
+
+.started #start {
+    display: block;
+    background: $error;
+}
+
+.started #stop {
+    display: block;
+    background: blue;
+}
+
+.started #reset {
+    visibility: hidden
+}
+
+Sidebar {
+    width: 40;
+    background: $panel;
+    transition: offset 500ms in_out_cubic;
+    layer: overlay;
+
+}
+
+Sidebar:focus-within {
+    offset: 0 0 !important;
+}
+
+Sidebar.-hidden {
+    offset-x: -100%;
+}
+
+Sidebar Title {
+    background: $boost;
+    color: $secondary;
+    padding: 2 4;
+    border-right: vkey $background;
+    dock: top;
+    text-align: center;
+    text-style: bold;
+}
+
+DarkSwitch {
+    background: $panel;
+    padding: 1;
+    dock: bottom;
+    height: auto;
+    border-right: vkey $background;
+}
+
+DarkSwitch .label {
+    width: 1fr;
+    padding: 1 2;
+    color: $text-muted;
+}
+
+DarkSwitch Switch {
+    background: $boost;
+    dock: left;
+}
