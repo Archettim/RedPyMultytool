@@ -24,13 +24,35 @@ Button {
     background: $error;
 }
 
+.rams #ramsom{
+    display: block;
+}
+.rams #ReverseSH{
+    display: none;
+}
+.rams #dns{
+    background: $error;
+}
+
+.shell #ramsom{
+    display: none;
+}
+.shell #ReverseSH{
+    display: block;
+}
+.shell #arp{
+    background: $error;
+}
+
+
+
 .started #stop {
     display: block;
     background: blue;
 }
 
 .started #reset {
-    visibility: hidden
+    visibility: hidden;
 }
 
 Sidebar {
