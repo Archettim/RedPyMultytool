@@ -3,6 +3,7 @@ from textual.containers import ScrollableContainer, Container, Horizontal
 from textual.widgets import Button, Footer, Header, Static, Switch, Input
 from cryptography.fernet import Fernet
 from cipher import Ramsom
+from ArpPoisoning import ArpPoison
 
 class Title(Static):
     pass

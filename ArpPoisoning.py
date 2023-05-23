@@ -21,7 +21,7 @@ class ArpPoison:
         print(f'initialized {interf}:')
         print(f'Gateway ({gateway}) is at {self.gatewayMAC}')
         print(f'Target is ({targip}) is at {self.targetMAC}')
-        print('-'*60)
+        print('-'*50)
     
     def run(self):
         self.poison_thread = Process(target=self.poison)
@@ -68,7 +68,7 @@ class ArpPoison:
     def sniff(self,count=200):
         pass
 
-    def restore(self):
+    def restore(self): #da fixxare
         print("Restoring ARP tables....")
         send(ARP(
                 op=2,
