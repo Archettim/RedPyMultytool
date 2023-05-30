@@ -8,15 +8,10 @@ def listener(ip="172.20.212.122",port=4242):
     conn, addr = s.accept()
     print('Connection received from ',addr)
     while True:
-        #Receive data from the target and get user input
         ans = conn.recv(1024).decode()
         sys.stdout.write(ans)
         command = input()
-
-        #Send command
         command += "\n"
         conn.send(command.encode())
         time.sleep(0.2)
-
-        #Remove the output of the "input()" function
         sys.stdout.write("\033[A" + ans.split("\n")[-1])
