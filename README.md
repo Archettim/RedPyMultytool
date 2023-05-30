@@ -4,8 +4,8 @@ App design:
   * [ ] textual app design
 
 Tools to implement:
-  * [ ] ARP Poisoning
-  * [ ] DNS Poisoning
+  * [x] ARP Poisoning
+  * [x] DNS Poisoning
   * [ ] Reverse shells
   * [ ] keylogger
   * [ ] ramsomware
