@@ -35,11 +35,35 @@ class Sidebar(Container):
 
     def on_button_pressed(self,event:Button.Pressed) -> None:
         button_id=event.button.id
-        if button_id=="rmw":
-            self.add_class("rams")
+        if button_id=="dns":
+            self.remove_class("rams")
             self.remove_class("shell")
+            self.add_class("dnsp")
+            self.remove_class("arpp")
+            self.remove_class("wrm")
+        elif button_id=="arp":
+            self.add_class("arpp")
+            self.remove_class("shell")
+            self.remove_class("rams")
+            self.remove_class("dnsp")
+            self.remove_class("wrm")
         elif button_id=="sh":
+            self.remove_class("arpp")
+            self.remove_class("dnsp")
             self.add_class("shell")
+            self.remove_class("rams")
+            self.remove_class("wrm")
+        elif button_id=="rmw":
+            self.remove_class("arpp")
+            self.remove_class("dnsp")
+            self.remove_class("shell")
+            self.remove_class("rams")
+            self.remove_class("wrm")
+        elif button_id=="wr":
+            self.add_class("wrm")
+            self.remove_class("arpp")
+            self.remove_class("dnsp")
+            self.remove_class("shell")
             self.remove_class("rams")
 
 class ReverseSH(Static):

@@ -23,24 +23,31 @@ Button {
     display: block;
     background: $error;
 }
-
-.rams #ramsom{
-    display: block;
-}
-.rams #ReverseSH{
-    display: none;
-}
-.rams #dns{
+.rams #rmw{
     background: $error;
 }
 
-.shell #ramsom{
-    display: none;
+.arpp,.shell,.rams,.wrm #dns{
+    background: $success;
 }
-.shell #ReverseSH{
+.dnsp,.shell,.rams,.wrm #arp{
+    background: $success;
+}
+.dnsp,.arpp,.rams,.wrm #sh{
+    background: $success;
+}
+.dnsp,.arpp,.shell,.wrm #rmw{
+    background: $success;
+}
+.dnsp,.arpp,.shell,.rams, #wr{
+    background: $success;
+}
+
+
+.shell #sh{
     display: block;
 }
-.shell #arp{
+.shell #sh{
     background: $error;
 }
 
