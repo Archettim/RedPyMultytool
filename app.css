@@ -1,36 +1,101 @@
 Button {
     width: 16;
 }
+
+Static{
+    color: rgb(226, 46, 226);
+}
+
+#arpTitle{
+    content-align: center top;
+}
+
+#dnsTitle{
+    content-align: center top;
+}
+
+#DNS_st{
+    layout: horizontal;
+    padding: 4 0 0 32;
+}
+
+#DnsStart{
+    margin: 0 1 0 0;
+}
+
+#DNS_addel{
+    layout: horizontal;
+    padding: 4 0 0 32;
+}
+
+#RevBtn{
+    layout: horizontal;
+    padding: 3 0 0 40;
+}
+
+#btnAdd{
+    margin: 0 1 0 0;
+}
+
+#btnshw{
+    margin: 0 1 0 0;
+}
+
+#ARPsub_res{
+    layout: horizontal;
+    padding: 2 0 0 40;
+}
+
+#ARPlogs{
+    layout: horizontal;
+}
+
+#ArpST_st{
+    layout: horizontal;
+    padding: 2 0 0 40;
+}
+
+#ARPsubm{
+    content-align: center middle;
+    margin: 0 1 0 0;
+}
+
+#ARPreset{
+    content-align: center middle;
+}
+
+#arpInfoTL{
+    content-align: left middle;
+}
+
+#arpProcTL{
+    content-align: right middle;
+}
+
+#ARPstart{
+    content-align: center bottom;
+    margin: 0 1 0 0;
+}
+
+#ARPstop{
+    content-align: center bottom;
+}
+
 #dns,#arp,#sh,#rmw,#wr{
     width: 40;
 }
 
-#start {
-    dock: left;
+.started #start{
+    background: $error;
 }
-
-#stop {
-    dock: right;
-
-}
-
-#reset {
-    dock: right;
-}
-
 
 .started #start {
-    display: block;
     background: $error;
 }
-.rams #rmw{
-    background: $error;
-}
-
 .arpp,.shell,.rams,.wrm #dns{
     background: $success;
 }
-.dnsp,.shell,.rams,.wrm #arp{
+.dnsp,.shell,.wrm,.rams #arp{
     background: $success;
 }
 .dnsp,.arpp,.rams,.wrm #sh{
@@ -43,23 +108,43 @@ Button {
     background: $success;
 }
 
+.dnsp #dns{
+    display: block;
+    background: $error;
+}
+
+.arpp #arp{
+    display: block;
+    background: $error;
+}
 
 .shell #sh{
     display: block;
+    background: $error;
 }
-.shell #sh{
+
+.rams #rmw{
+    display: block;
     background: $error;
 }
 
 
-
-.started #stop {
+.wrm #wr{
     display: block;
-    background: blue;
+    background: $error;
 }
 
-.started #reset {
-    visibility: hidden;
+
+.hidden #arpTUI{
+    display:  none;
+}
+
+.hidden #dnsTUI{
+    display:  none;
+}
+
+.hidden #reverseSH{
+    display:  none;
 }
 
 Sidebar {

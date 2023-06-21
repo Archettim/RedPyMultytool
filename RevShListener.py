@@ -1,6 +1,6 @@
 import socket, sys, time
 
-def listener(ip="172.20.212.122",port=4242):
+def listener(ip=socket.gethostbyname(socket.gethostname()),port=4242):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((ip, port))
     s.listen(1)
@@ -15,3 +15,6 @@ def listener(ip="172.20.212.122",port=4242):
         conn.send(command.encode())
         time.sleep(0.2)
         sys.stdout.write("\033[A" + ans.split("\n")[-1])
+
+if __name__=="__main__":
+    listener()
