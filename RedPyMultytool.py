@@ -1,7 +1,6 @@
 from textual.app import App, ComposeResult
 from textual.containers import ScrollableContainer, Container, Horizontal
-from textual.widgets import Button, Footer, Header, Static, Switch, Input, TextLog, LoadingIndicator
-from cryptography.fernet import Fernet
+from textual.widgets import Button, Footer, Header, Static, Switch, Input, TextLog
 from cipher import Ramsom
 from rich.console import Console
 from ArpPoisoning import ArpPoison
@@ -45,27 +44,48 @@ class Sidebar(Container):
     def on_button_pressed(self,event:Button.Pressed) -> None:
         button_id=event.button.id
         if button_id=="dns":
-            self.app.get_a().add_class("hidden")
-            self.app.get_b().add_class("hidden")
-            self.app.get_c().remove_class("hidden")
+            #self.app.get_a().add_class("hidden")
+            #self.app.get_b().add_class("hidden")
+            #self.app.get_c().remove_class("hidden")
+            try:
+                self.app.query_one(ARPpoison).remove()
+                self.app.query_one(ReverseSH).remove()
+                self.app.query_one(DNSPoison).remove()
+            except:
+                print("f1")
+            self.app.mount(self.app.get_c())
             self.add_class("dnsp")
             self.remove_class("rams")
             self.remove_class("shell")
             self.remove_class("arpp")
             self.remove_class("wrm")
         elif button_id=="arp":
-            self.app.get_a().remove_class("hidden")
-            self.app.get_b().add_class("hidden")
-            self.app.get_c().add_class("hidden")
+            #self.app.get_a().remove_class("hidden")
+            #self.app.get_b().add_class("hidden")
+            #self.app.get_c().add_class("hidden")
+            try:
+                self.app.query_one(DNSPoison).remove()
+                self.app.query_one(ReverseSH).remove()
+                self.app.query_one(ARPpoison).remove()
+            except:
+                print("f2")
+            self.app.mount(self.app.get_a())
             self.add_class("arpp")
             self.remove_class("shell")
             self.remove_class("rams")
             self.remove_class("dnsp")
             self.remove_class("wrm")
         elif button_id=="sh":
-            self.app.get_a().add_class("hidden")
-            self.app.get_b().remove_class("hidden")
-            self.app.get_c().add_class("hidden")
+            #self.app.get_a().add_class("hidden")
+            #self.app.get_b().remove_query_one("main")class("hidden")
+            #self.app.get_c().add_class("hidden")
+            try:
+                self.app.query_one(ARPpoison).remove()
+                self.app.query_one(ReverseSH).remove()
+                self.app.query_one(DNSPoison).remove()
+            except:
+                print("f3")
+            self.app.mount(self.app.get_b())
             self.add_class("shell")
             self.remove_class("arpp")
             self.remove_class("dnsp")
@@ -254,12 +274,13 @@ class RedPyMultytool(App):
     BINDINGS=[("q","quit","Exit app"),("d","toggle_dark","Toggle dark mode"),("b", "toggle_sidebar", "Sidebar"),]
     def compose(self) -> ComposeResult:
         yield Header()
-        yield self.c
-        yield self.b
-        yield self.a
+        #yield self.c
+        #yield self.b
+        #yield self.a
 
         yield Sidebar(classes="-hidden")
         yield Footer()
+        yield Title("menu")
     
     def get_a(self):
         return self.a
