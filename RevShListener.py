@@ -1,10 +1,13 @@
 import socket, sys, time
 
-def listener(ip=socket.gethostbyname(socket.gethostname()),port=4242):
+def listener(port=4242):
+    c = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    c.connect(("8.8.8.8", 80))
+    ip=c.getsockname()[0]
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.bind((ip, port))
     s.listen(1)
-    print("Listening on port " + str(port))
+    print("Listening ip: "+ip+" on port " + str(port))
     conn, addr = s.accept()
     print('Connection received from ',addr)
     while True:
@@ -17,4 +20,4 @@ def listener(ip=socket.gethostbyname(socket.gethostname()),port=4242):
         sys.stdout.write("\033[A" + ans.split("\n")[-1])
 
 if __name__=="__main__":
-    listener()
+    listener(int(sys.argv[1]))

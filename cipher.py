@@ -1,37 +1,41 @@
 from cryptography.fernet import Fernet
+from textual.widgets import TextLog
 import os
 
 class Ramsom:
-    def __init__(self,Dirpath,keypath=""):
-        if keypath=="":
-            self.Key_gen() 
-        else:
-            with open(keypath,"r") as key: self.key=key.read()
-        self.rootPath=Dirpath
+    def __init__(self):
+        pass
 
     def getKey(self): return self.key
-
-    def getRootPath(self): return self.rootPath
-
-    def setRootPath(self, path): self.rootPath=path
     
-    def setKey(self, keypath):
-        with open(keypath,"r") as key: self.key=key.read()
+    def setKey(self, keypath,t:TextLog):
+        with open("keys/"+keypath+".key","r") as key: self.key=key.read()
+        t.write("[$error]WARNING: key file name does not exhists")
 
-    def Key_gen(self):
-        self.key=Fernet.generate_key()
-        with open("filekey.key","wb") as key:key.write(self.key)
+    def Key_gen(self,name,t:TextLog):
+        key=Fernet.generate_key()
+        if os.path.exists("keys/"+name+".key"):
+            t.write("[$error]WARNING: key file name already exhists, use another name")
+        else:
+            with open("keys/"+name+".key","wb") as keyF:keyF.write(key)
+            t.write(f"[$sucess]New key generated at {name}.key with value: {key}")
 
-    def crypt(self):
-        '''prova'''
-        print("encription Started....")
-        self.cryptfolder(self.rootPath)
-        print("encription finished")
+    def deleteKEY(self,name,t:TextLog):
+        if os.path.exists("keys/"+name+".key"):
+            os.remove("keys/"+name)
+            t.write("[$Success]KEY succesfuly deleted")
+        else:
+            t.write("[$error]WARNING: key file name does not exhists")
+
+    def crypt(self,path,t:TextLog):
+        t.write("encription Started....")
+        self.cryptfolder(path)
+        t.write("encription finished")
     
-    def decrypt(self):
-        print("Decription Started....")
-        self.decryptfolder(self.rootPath)
-        print("Decription finished")
+    def decrypt(self,path,t:TextLog):
+        t.write("Decription Started....")
+        self.decryptfolder(path)
+        t.write("Decription finished")
 
     def cryptfolder(self,path):
         for f in os.scandir(path):self.cryptfolder(path+"/"+f.name) if f.is_dir() else self.__CipherFile__(path+"/"+f.name)

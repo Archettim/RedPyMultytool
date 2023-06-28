@@ -55,6 +55,28 @@ Static{
     padding: 2 0 0 40;
 }
 
+#keys{
+    layout: horizontal;
+    padding: 2 0 0 1;
+}
+
+#Rams{
+    layout: horizontal;
+    padding: 2 0 0 1;
+}
+
+#genKEY{
+    margin: 0 1 0 0;
+}
+
+#delKEY{
+    margin: 0 1 0 0;
+}
+
+#encr{
+    margin: 0 1 0 0;
+}
+
 #ARPsubm{
     content-align: center middle;
     margin: 0 1 0 0;
