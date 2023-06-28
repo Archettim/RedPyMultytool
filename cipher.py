@@ -9,8 +9,11 @@ class Ramsom:
     def getKey(self): return self.key
     
     def setKey(self, keypath,t:TextLog):
-        with open("keys/"+keypath+".key","r") as key: self.key=key.read()
-        t.write("[$error]WARNING: key file name does not exhists")
+        try:
+            with open("keys/"+keypath+".key","r") as key: self.key=key.read()
+            t.write(f"[$error]Using file key {keypath}.key with value: '{self.key}'")
+        except:
+            t.write("[$error]WARNING: key file name does not exhists")
 
     def Key_gen(self,name,t:TextLog):
         key=Fernet.generate_key()
@@ -18,11 +21,11 @@ class Ramsom:
             t.write("[$error]WARNING: key file name already exhists, use another name")
         else:
             with open("keys/"+name+".key","wb") as keyF:keyF.write(key)
-            t.write(f"[$sucess]New key generated at {name}.key with value: {key}")
+            t.write(f"[$sucess]New key generated at {name}.key with value: {key.decode()}")
 
     def deleteKEY(self,name,t:TextLog):
         if os.path.exists("keys/"+name+".key"):
-            os.remove("keys/"+name)
+            os.remove("keys/"+name+".key")
             t.write("[$Success]KEY succesfuly deleted")
         else:
             t.write("[$error]WARNING: key file name does not exhists")
@@ -55,9 +58,10 @@ class Ramsom:
     
 
 if __name__=="__main__":
+    pass
     #Key_gen()
-    r=Ramsom("/home/miky/Desktop/RedPyMultytool/TargetFolder","filekey.key")
+    #r=Ramsom("/home/miky/Desktop/RedPyMultytool/TargetFolder","filekey.key")
     #r.crypt()
-    r.decrypt()
+    #r.decrypt()
     #cryptfolder("/home/miky/Desktop/RedPyMultytool/TargetFolder",k)
     #decryptfolder("/home/miky/Desktop/RedPyMultytool/TargetFolder",k)

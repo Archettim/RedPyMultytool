@@ -62,5 +62,5 @@ class DnsPoisoning():
         try:
             queue.bind(QUEUE_NUM, self.process_packet)
             queue.run()
-        except KeyboardInterrupt:
+        except:
             os.system("iptables --flush")

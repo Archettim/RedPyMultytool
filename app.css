@@ -103,7 +103,7 @@ Static{
     content-align: center bottom;
 }
 
-#dns,#arp,#sh,#rmw,#wr{
+#dns,#arp,#sh,#rmw,#smu{
     width: 40;
 }
 
@@ -114,19 +114,19 @@ Static{
 .started #start {
     background: $error;
 }
-.arpp,.shell,.rams,.wrm #dns{
+.arpp,.shell,.rams,.smrf #dns{
     background: $success;
 }
-.dnsp,.shell,.wrm,.rams #arp{
+.dnsp,.shell,.smrf,.rams #arp{
     background: $success;
 }
-.dnsp,.arpp,.rams,.wrm #sh{
+.dnsp,.arpp,.rams,.smrf #sh{
     background: $success;
 }
-.dnsp,.arpp,.shell,.wrm #rmw{
+.dnsp,.arpp,.shell,.smrf #rmw{
     background: $success;
 }
-.dnsp,.arpp,.shell,.rams, #wr{
+.dnsp,.arpp,.shell,.rams, #smu{
     background: $success;
 }
 
@@ -151,22 +151,9 @@ Static{
 }
 
 
-.wrm #wr{
+.smrf #smu{
     display: block;
     background: $error;
-}
-
-
-.hidden #arpTUI{
-    display:  none;
-}
-
-.hidden #dnsTUI{
-    display:  none;
-}
-
-.hidden #RevTUI{
-    display:  none;
 }
 
 Sidebar {
